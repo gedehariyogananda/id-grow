@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\API;
 
+use App\Helper\ApiResponseHelper;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Services\UserService;
 
 class AuthController extends Controller
@@ -14,13 +16,13 @@ class AuthController extends Controller
         $this->userService = $userService;
     }
 
-    public function detail($id)
+    public function index()
     {
         try {
-            $user = $this->userService->getUserById($id);
-            return response()->json($user, 200);
+            $users = $this->userService->get(request(User::$allowedParams));
+            return ApiResponseHelper::paginated($users);
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 404);
+            return ApiResponseHelper::error($e->getMessage(), 500);
         }
     }
 }

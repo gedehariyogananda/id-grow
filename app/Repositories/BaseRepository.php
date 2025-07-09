@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Base;
+namespace App\Repositories;
 
+use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Collection;
 
 abstract class BaseRepository
 {
@@ -14,14 +14,15 @@ abstract class BaseRepository
         $this->model = $model;
     }
 
-    public function get(array $columns = ['*']): Collection
+    public function get($options): Paginator
     {
-        return $this->model->all($columns);
+        return $this->model::options($options)
+            ->paginate(request('limit', 10));
     }
 
-    public function find(int $id, array $columns = ['*']): Model
+    public function find(int $id): Model
     {
-        return $this->model->findOrFail($id, $columns);
+        return $this->model->findOrFail($id);
     }
 
     public function create(array $data): Model
