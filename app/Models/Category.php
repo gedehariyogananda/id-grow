@@ -3,30 +3,22 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
-use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable implements JWTSubject
+class Category extends Model
 {
-    use HasFactory, Notifiable, HasApiTokens;
+    use HasFactory;
 
-    protected $table = 'users';
+    protected $table = 'categories';
     protected $fillable = [
         'name',
-        'email',
-        'password',
-        'refresh_token',
+        'description',
     ];
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+
     protected $fields = [
         'id',
         'name',
-        'email',
+        'description',
     ];
     static $allowedParams = [
         'search',
@@ -34,7 +26,7 @@ class User extends Authenticatable implements JWTSubject
         'order',
         'fields',
         'name',
-        'email',
+        'description',
     ];
 
     public function scopeOptions($query, $options = [])
@@ -70,29 +62,11 @@ class User extends Authenticatable implements JWTSubject
             $query->where('name', $options['name']);
         }
 
-        if (isset($options['email'])) {
-            $query->where('email', $options['email']);
+        if (isset($options['description'])) {
+            $query->where('description', $options['description']);
         }
 
         return $query;
-    }
-
-    public function getJWTIdentifier()
-    {
-        return $this->getKey();
-    }
-
-    public function getJWTCustomClaims(): array
-    {
-        return [];
-    }
-
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
     }
 
     public function scopeWithAllRelations($query)

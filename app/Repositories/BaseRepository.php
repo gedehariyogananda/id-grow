@@ -23,7 +23,7 @@ abstract class BaseRepository
 
     public function find(int $id): Model
     {
-        $find = $this->model->find($id);
+        $find = $this->model::withAllRelations()->find($id);
         if (!$find) {
             throw new HttpException(404, 'Resource not found');
         }

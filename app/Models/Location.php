@@ -3,38 +3,30 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
-use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable implements JWTSubject
+class Location extends Model
 {
-    use HasFactory, Notifiable, HasApiTokens;
+    use HasFactory;
 
-    protected $table = 'users';
+    protected $table = 'locations';
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'refresh_token',
+        'location_code',
+        'location_name',
     ];
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+
     protected $fields = [
         'id',
-        'name',
-        'email',
+        'location_code',
+        'location_name',
     ];
     static $allowedParams = [
         'search',
         'sortby',
         'order',
         'fields',
-        'name',
-        'email',
+        'location_code',
+        'location_name',
     ];
 
     public function scopeOptions($query, $options = [])
@@ -66,33 +58,15 @@ class User extends Authenticatable implements JWTSubject
             }
         }
 
-        if (isset($options['name'])) {
-            $query->where('name', $options['name']);
+        if (isset($options['location_code'])) {
+            $query->where('location_code', $options['location_code']);
         }
 
-        if (isset($options['email'])) {
-            $query->where('email', $options['email']);
+        if (isset($options['location_name'])) {
+            $query->where('location_name', $options['location_name']);
         }
 
         return $query;
-    }
-
-    public function getJWTIdentifier()
-    {
-        return $this->getKey();
-    }
-
-    public function getJWTCustomClaims(): array
-    {
-        return [];
-    }
-
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
     }
 
     public function scopeWithAllRelations($query)

@@ -3,38 +3,36 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
-use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable implements JWTSubject
+class Product extends Model
 {
-    use HasFactory, Notifiable, HasApiTokens;
+    use HasFactory;
 
-    protected $table = 'users';
+    protected $table = 'products';
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'refresh_token',
+        'product_code',
+        'name_product',
+        'category_id',
+        'unit_id',
     ];
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+
     protected $fields = [
         'id',
-        'name',
-        'email',
+        'product_code',
+        'name_product',
+        'category_id',
+        'unit_id',
     ];
     static $allowedParams = [
         'search',
         'sortby',
         'order',
         'fields',
-        'name',
-        'email',
+        'product_code',
+        'name_product',
+        'category_id',
+        'unit_id',
     ];
 
     public function scopeOptions($query, $options = [])
@@ -66,37 +64,41 @@ class User extends Authenticatable implements JWTSubject
             }
         }
 
-        if (isset($options['name'])) {
-            $query->where('name', $options['name']);
+        if (isset($options['product_code'])) {
+            $query->where('product_code', $options['product_code']);
         }
 
-        if (isset($options['email'])) {
-            $query->where('email', $options['email']);
+        if (isset($options['name_product'])) {
+            $query->where('name_product', $options['name_product']);
+        }
+
+        if (isset($options['category_id'])) {
+            $query->where('category_id', $options['category_id']);
+        }
+
+        if (isset($options['unit_id'])) {
+            $query->where('unit_id', $options['unit_id']);
         }
 
         return $query;
     }
 
-    public function getJWTIdentifier()
+    public function category()
     {
-        return $this->getKey();
+        return $this->belongsTo(Category::class);
     }
 
-    public function getJWTCustomClaims(): array
+    public function unit()
     {
-        return [];
-    }
-
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->belongsTo(Unit::class);
     }
 
     public function scopeWithAllRelations($query)
     {
-        return $query;
+        return $query->with(['category' => function ($query) {
+            $query->select(['id', 'name']);
+        }, 'unit' => function ($query) {
+            $query->select(['id', 'name']);
+        }]);
     }
 }
