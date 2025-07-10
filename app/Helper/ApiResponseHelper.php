@@ -9,16 +9,16 @@ class ApiResponseHelper
     public static function success($data, string $message = 'Data retrieved successfully', int $statusCode = 200)
     {
         return response()->json([
-            'status' => 'success',
+            'data' => $data,
+            'statusCode' => $statusCode,
             'message' => $message,
-            'data' => $data
         ], $statusCode);
     }
 
     public static function error(string $message = 'An error occurred', int $statusCode = 400)
     {
         return response()->json([
-            'status' => 'error',
+            'statusCode' => $statusCode,
             'message' => $message
         ], $statusCode);
     }
@@ -26,7 +26,7 @@ class ApiResponseHelper
     public static function paginated($outputData, string $message = 'Data retrieved successfully')
     {
         return response()->json([
-            'status' => 'success',
+            'statusCode' => 200,
             'message' => $message,
             'data' => $outputData->items(),
             'meta' => [

@@ -5,24 +5,38 @@ namespace App\Http\Controllers\API;
 use App\Helper\ApiResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\AuthService;
 use App\Services\UserService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
     protected $userService;
+    protected $authService;
 
-    public function __construct(UserService $userService)
+    public function __construct(UserService $userService, AuthService $authService)
     {
         $this->userService = $userService;
+        $this->authService = $authService;
     }
 
-    public function index()
+    public function login(Request $request)
     {
-        try {
-            $users = $this->userService->get(request(User::$allowedParams));
-            return ApiResponseHelper::paginated($users);
-        } catch (\Exception $e) {
-            return ApiResponseHelper::error($e->getMessage(), 500);
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required|string',
+            'me' => 'nullable|boolean',
+        ]);
+
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
         }
+
+        $validated = $validator->validated();
+
+        $authenticate = $this->authService->login($validated);
+        return ApiResponseHelper::success($authenticate, 'Login successful');
     }
 }

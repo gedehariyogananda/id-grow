@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Model;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 abstract class BaseRepository
 {
@@ -22,7 +23,12 @@ abstract class BaseRepository
 
     public function find(int $id): Model
     {
-        return $this->model->findOrFail($id);
+        $find = $this->model->find($id);
+        if (!$find) {
+            throw new HttpException(404, 'Resource not found');
+        }
+
+        return $find;
     }
 
     public function create(array $data): Model
