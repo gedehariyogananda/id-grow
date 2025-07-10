@@ -27,7 +27,6 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required|string',
-            'me' => 'nullable|boolean',
         ]);
 
         if ($validator->fails()) {
@@ -38,5 +37,25 @@ class AuthController extends Controller
 
         $authenticate = $this->authService->login($validated);
         return ApiResponseHelper::success($authenticate, 'Login successful');
+    }
+
+    public function refresh(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'refresh_token' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+
+        $validated = $validator->validated();
+
+        $result = $this->authService->refresh($validated['refresh_token']);
+        if (!$result) {
+            return ApiResponseHelper::error('Invalid refresh token', 401);
+        }
+
+        return ApiResponseHelper::success($result, 'Token refreshed successfully');
     }
 }
