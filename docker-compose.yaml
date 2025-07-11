@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  app:
+    build: 
+    container_name: "grow-id-backend"
+    ports:
+      - ${APP_PORT}:${APP_PORT}
+    volumes:
+      - /home/freelance-environment/.env-growid-dev:/var/www/.env
