@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   app:
-    build: 
+    build: .
     container_name: "grow-id-backend"
     ports:
       - ${APP_PORT}:${APP_PORT}
