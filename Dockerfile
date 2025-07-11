@@ -9,7 +9,6 @@ RUN apk add --no-cache \
     git \
     curl
 
-# Install PHP extensions
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
 COPY --from=composer:2.6 /usr/bin/composer /usr/bin/composer
