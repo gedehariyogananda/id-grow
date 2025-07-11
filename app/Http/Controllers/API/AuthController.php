@@ -4,7 +4,6 @@ namespace App\Http\Controllers\API;
 
 use App\Helper\ApiResponseHelper;
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use App\Services\AuthService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
