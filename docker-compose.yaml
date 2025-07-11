@@ -22,7 +22,7 @@ services:
     networks:
       - proxy
     expose:
-      - ${APP_PORT}
+      - ${APP_PORT}:80
 
 networks:
   proxy:
