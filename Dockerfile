@@ -23,6 +23,6 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction
 RUN chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www/storage
 
-EXPOSE ${PORT}
+EXPOSE ${APP_PORT}
 
 CMD ["php-fpm"]
