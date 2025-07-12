@@ -33,6 +33,14 @@ cp .env.example .env
 
 php artisan key:generate
 
+# Configure your PostgreSQL database in `.env`:
+#    - DB_CONNECTION=pgsql
+#    - DB_HOST=127.0.0.1
+#    - DB_PORT=5432
+#    - DB_DATABASE=id-grow-db
+#    - DB_USERNAME=your_postgres_username
+#    - DB_PASSWORD=your_postgres_password
+# then run
 php artisan migrate
 
 php artisan migrate:fresh --seed
