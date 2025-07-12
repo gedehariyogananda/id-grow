@@ -86,6 +86,11 @@ class ProductLocation extends Model
         return $this->belongsTo(Location::class, 'location_id');
     }
 
+    public function mutations()
+    {
+        return $this->hasMany(Mutation::class, 'product_location_id');
+    }
+
     public function scopeWithAllRelations($query)
     {
         return $query->with(['product', 'location']);

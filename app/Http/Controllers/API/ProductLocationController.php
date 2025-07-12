@@ -44,49 +44,41 @@ class ProductLocationController extends Controller
 
     public function store(Request $request)
     {
-        try {
-            $validator = Validator::make($request->all(), [
-                'product_id' => 'required|exists:products,id',
-                'location_id' => 'required|exists:locations,id',
-                'stock' => 'required|integer|min:0',
-            ]);
+        $validator = Validator::make($request->all(), [
+            'product_id' => 'required|exists:products,id',
+            'location_id' => 'required|exists:locations,id',
+            'stock' => 'required|integer|min:0',
+        ]);
 
-            if ($validator->fails()) {
-                throw new ValidationException($validator);
-            }
-
-            $data = $validator->validated();
-
-            $productLocation = $this->productLocationService->create($data);
-            return ApiResponseHelper::success($productLocation, 'Product Location created successfully');
-        } catch (\Exception $e) {
-            return ApiResponseHelper::error($e->getMessage(), 500);
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
         }
+
+        $data = $validator->validated();
+
+        $productLocation = $this->productLocationService->create($data);
+        return ApiResponseHelper::success($productLocation, 'Product Location created successfully');
     }
 
     public function update(Request $request, $id)
     {
-        try {
-            $validator = Validator::make($request->all(), [
-                'product_id' => 'sometimes|required|exists:products,id',
-                'location_id' => 'sometimes|required|exists:locations,id',
-                'stock' => 'sometimes|required|integer|min:0',
-            ]);
+        $validator = Validator::make($request->all(), [
+            'product_id' => 'sometimes|required|exists:products,id',
+            'location_id' => 'sometimes|required|exists:locations,id',
+            'stock' => 'sometimes|required|integer|min:0',
+        ]);
 
-            if ($validator->fails()) {
-                throw new ValidationException($validator);
-            }
-
-            $data = $validator->validated();
-
-            $productLocation = $this->productLocationService->update($id, $data);
-            if (!$productLocation) {
-                return ApiResponseHelper::error('Product Location not found', 404);
-            }
-            return ApiResponseHelper::success($productLocation, 'Product Location updated successfully');
-        } catch (\Exception $e) {
-            return ApiResponseHelper::error($e->getMessage(), 500);
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
         }
+
+        $data = $validator->validated();
+
+        $productLocation = $this->productLocationService->update($id, $data);
+        if (!$productLocation) {
+            return ApiResponseHelper::error('Product Location not found', 404);
+        }
+        return ApiResponseHelper::success($productLocation, 'Product Location updated successfully');
     }
 
     public function destroy($id)

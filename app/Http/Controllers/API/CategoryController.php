@@ -45,44 +45,36 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        try {
-            $validator = Validator::make($request->all(), [
-                'name' => 'required|string|max:255',
-                'description' => 'nullable|string',
-            ]);
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
 
-            if ($validator->fails()) {
-                throw new ValidationException($validator);
-            }
-
-            $data = $validator->validated();
-
-            $category = $this->categoryService->create($data);
-            return ApiResponseHelper::success($category, 'Category created successfully', 201);
-        } catch (\Exception $e) {
-            return ApiResponseHelper::error($e->getMessage(), 500);
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
         }
+
+        $data = $validator->validated();
+
+        $category = $this->categoryService->create($data);
+        return ApiResponseHelper::success($category, 'Category created successfully', 201);
     }
 
     public function update(Request $request, $id)
     {
-        try {
-            $validator = Validator::make($request->all(), [
-                'name' => 'sometimes|required|string|max:255',
-                'description' => 'nullable|string',
-            ]);
+        $validator = Validator::make($request->all(), [
+            'name' => 'sometimes|required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
 
-            if ($validator->fails()) {
-                throw new ValidationException($validator);
-            }
-
-            $data = $validator->validated();
-
-            $category = $this->categoryService->update($id, $data);
-            return ApiResponseHelper::success($category, 'Category updated successfully');
-        } catch (\Exception $e) {
-            return ApiResponseHelper::error($e->getMessage(), 500);
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
         }
+
+        $data = $validator->validated();
+
+        $category = $this->categoryService->update($id, $data);
+        return ApiResponseHelper::success($category, 'Category updated successfully');
     }
 
     public function destroy($id)

@@ -44,54 +44,46 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        try {
-            $validator = Validator::make($request->all(), [
-                'product_code' => 'required|string|max:255|unique:products,product_code',
-                'name_product' => 'required|string|max:255',
-                'category_id' => 'required|exists:categories,id',
-                'unit_id' => 'required|exists:units,id',
-            ]);
+        $validator = Validator::make($request->all(), [
+            'product_code' => 'required|string|max:255|unique:products,product_code',
+            'name_product' => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
+            'unit_id' => 'required|exists:units,id',
+        ]);
 
-            if ($validator->fails()) {
-                throw new ValidationException($validator);
-            }
-
-            $data = $validator->validated();
-
-            $product = $this->productService->create($data);
-            return ApiResponseHelper::success($product, 'Product created successfully');
-        } catch (\Exception $e) {
-            return ApiResponseHelper::error($e->getMessage(), 500);
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
         }
+
+        $data = $validator->validated();
+
+        $product = $this->productService->create($data);
+        return ApiResponseHelper::success($product, 'Product created successfully');
     }
 
     public function update(Request $request, $id)
     {
-        try {
-            $validator = Validator::make($request->all(), [
-                'product_code' => 'sometimes|required|string|max:255|unique:products,product_code,' . $id,
-                'name_product' => 'sometimes|required|string|max:255',
-                'category_id' => 'sometimes|required|exists:categories,id',
-                'unit_id' => 'sometimes|required|exists:units,id',
-            ]);
+        $validator = Validator::make($request->all(), [
+            'product_code' => 'sometimes|required|string|max:255|unique:products,product_code,' . $id,
+            'name_product' => 'sometimes|required|string|max:255',
+            'category_id' => 'sometimes|required|exists:categories,id',
+            'unit_id' => 'sometimes|required|exists:units,id',
+        ]);
 
-            if ($validator->fails()) {
-                throw new ValidationException($validator);
-            }
-
-            $data = $validator->validated();
-
-            $product = $this->productService->update($id, $data);
-            if (!$product) {
-                return ApiResponseHelper::error('Product not found', 404);
-            }
-            return ApiResponseHelper::success($product, 'Product updated successfully');
-        } catch (\Exception $e) {
-            return ApiResponseHelper::error($e->getMessage(), 500);
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
         }
+
+        $data = $validator->validated();
+
+        $product = $this->productService->update($id, $data);
+        if (!$product) {
+            return ApiResponseHelper::error('Product not found', 404);
+        }
+        return ApiResponseHelper::success($product, 'Product updated successfully');
     }
 
-    public function delete($id)
+    public function destroy($id)
     {
         try {
             $deleted = $this->productService->delete($id);

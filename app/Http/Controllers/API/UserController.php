@@ -44,50 +44,42 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        try {
-            $validator = Validator::make($request->all(), [
-                'name' => 'required|string|max:255',
-                'email' => 'required|email|unique:users,email',
-                'password' => 'required|string|min:8|confirmed',
-            ]);
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
 
-            if ($validator->fails()) {
-                throw new ValidationException($validator);
-            }
-
-            $data = $validator->validated();
-            $data['password'] = bcrypt($data['password']);
-
-            $user = $this->userService->create($data);
-            return ApiResponseHelper::success($user, 'User created successfully');
-        } catch (\Exception $e) {
-            return ApiResponseHelper::error($e->getMessage(), 500);
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
         }
+
+        $data = $validator->validated();
+        $data['password'] = bcrypt($data['password']);
+
+        $user = $this->userService->create($data);
+        return ApiResponseHelper::success($user, 'User created successfully');
     }
 
     public function update(Request $request, $id)
     {
-        try {
-            $validator = Validator::make($request->all(), [
-                'name' => 'sometimes|required|string|max:255',
-                'email' => 'sometimes|required|email|unique:users,email,' . $id,
-                'password' => 'sometimes|nullable|string|min:8|confirmed',
-            ]);
+        $validator = Validator::make($request->all(), [
+            'name' => 'sometimes|required|string|max:255',
+            'email' => 'sometimes|required|email|unique:users,email,' . $id,
+            'password' => 'sometimes|nullable|string|min:8|confirmed',
+        ]);
 
-            if ($validator->fails()) {
-                throw new ValidationException($validator);
-            }
-
-            $data = $validator->validated();
-            if (isset($data['password'])) {
-                $data['password'] = bcrypt($data['password']);
-            }
-
-            $user = $this->userService->update($id, $data);
-            return ApiResponseHelper::success($user, 'User updated successfully');
-        } catch (\Exception $e) {
-            return ApiResponseHelper::error($e->getMessage(), 500);
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
         }
+
+        $data = $validator->validated();
+        if (isset($data['password'])) {
+            $data['password'] = bcrypt($data['password']);
+        }
+
+        $user = $this->userService->update($id, $data);
+        return ApiResponseHelper::success($user, 'User updated successfully');
     }
 
     public function destroy($id)

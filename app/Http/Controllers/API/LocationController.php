@@ -44,47 +44,39 @@ class LocationController extends Controller
 
     public function store(Request $request)
     {
-        try {
-            $validator = Validator::make($request->all(), [
-                'name' => 'required|string|max:255',
-                'description' => 'nullable|string',
-            ]);
+        $validator = Validator::make($request->all(), [
+            'location_code' => 'required|string|max:255|unique:locations,location_code',
+            'location_name' => 'nullable|string',
+        ]);
 
-            if ($validator->fails()) {
-                throw new ValidationException($validator);
-            }
-
-            $data = $validator->validated();
-
-            $location = $this->locationService->create($data);
-            return ApiResponseHelper::success($location, 'Location created successfully');
-        } catch (\Exception $e) {
-            return ApiResponseHelper::error($e->getMessage(), 500);
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
         }
+
+        $data = $validator->validated();
+
+        $location = $this->locationService->create($data);
+        return ApiResponseHelper::success($location, 'Location created successfully');
     }
 
     public function update(Request $request, $id)
     {
-        try {
-            $validator = Validator::make($request->all(), [
-                'name' => 'sometimes|required|string|max:255',
-                'description' => 'sometimes|nullable|string',
-            ]);
+        $validator = Validator::make($request->all(), [
+            'location_code' => 'required|string|max:255|unique:locations,location_code,' . $id,
+            'location_name' => 'nullable|string',
+        ]);
 
-            if ($validator->fails()) {
-                throw new ValidationException($validator);
-            }
-
-            $data = $validator->validated();
-
-            $location = $this->locationService->update($id, $data);
-            if (!$location) {
-                return ApiResponseHelper::error('Location not found', 404);
-            }
-            return ApiResponseHelper::success($location, 'Location updated successfully');
-        } catch (\Exception $e) {
-            return ApiResponseHelper::error($e->getMessage(), 500);
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
         }
+
+        $data = $validator->validated();
+
+        $location = $this->locationService->update($id, $data);
+        if (!$location) {
+            return ApiResponseHelper::error('Location not found', 404);
+        }
+        return ApiResponseHelper::success($location, 'Location updated successfully');
     }
 
     public function destroy($id)

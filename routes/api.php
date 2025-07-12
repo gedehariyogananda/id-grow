@@ -15,7 +15,8 @@ Route::get('/helth', function () {
 });
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
-Route::post('/refresh', [AuthController::class, 'refresh'])->name('refresh.token');
+Route::post('/refresh', [AuthController::class, 'refresh']);
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
 Route::middleware(['auth:sanctum'])->group(function () {
 
@@ -25,7 +26,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/', [UserController::class, 'store']);
         Route::put('/{id}', [UserController::class, 'update']);
         Route::delete('/{id}', [UserController::class, 'destroy']);
-        Route::get('/me', [UserController::class, 'me']);
+        Route::get('/me/profile', [UserController::class, 'me']);
     });
 
     Route::prefix('categories')->group(function () {

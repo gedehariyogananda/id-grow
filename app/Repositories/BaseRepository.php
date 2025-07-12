@@ -43,6 +43,12 @@ abstract class BaseRepository
 
     public function delete(int $id): bool
     {
-        return $this->model->delete($id);
+        $item = $this->model->find($id);
+
+        if (!$item) {
+            return false;
+        }
+
+        return (bool) $item->delete();
     }
 }

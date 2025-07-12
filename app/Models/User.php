@@ -22,6 +22,7 @@ class User extends Authenticatable implements JWTSubject
     protected $hidden = [
         'password',
         'remember_token',
+        'refresh_token',
     ];
     protected $fields = [
         'id',
@@ -35,6 +36,7 @@ class User extends Authenticatable implements JWTSubject
         'fields',
         'name',
         'email',
+        'embed'
     ];
 
     public function scopeOptions($query, $options = [])
@@ -74,7 +76,23 @@ class User extends Authenticatable implements JWTSubject
             $query->where('email', $options['email']);
         }
 
+        if (isset($options['embed'])) {
+            if ($options['embed'] === 'mutations') {
+                $query->select(['id', 'name', 'email'])
+                    ->with([
+                        'mutations' => function ($query) {
+                            $query->select(['id', 'user_id', 'mutation_code', 'mutation_date', 'type', 'quantity', 'note']);
+                        }
+                    ]);
+            }
+        }
+
         return $query;
+    }
+
+    public function mutations()
+    {
+        return $this->hasMany(Mutation::class, 'user_id');
     }
 
     public function getJWTIdentifier()
@@ -97,6 +115,11 @@ class User extends Authenticatable implements JWTSubject
 
     public function scopeWithAllRelations($query)
     {
-        return $query;
+        return $query->select(['id', 'name', 'email'])
+            ->with([
+                'mutations' => function ($query) {
+                    $query->select(['id', 'user_id', 'mutation_code', 'mutation_date', 'type', 'quantity', 'note']);
+                }
+            ]);
     }
 }

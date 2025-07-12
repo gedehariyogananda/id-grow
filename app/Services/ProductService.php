@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use App\Models\Product;
 use App\Repositories\ProductRepository;
+use Illuminate\Contracts\Pagination\Paginator;
 
 class ProductService extends BaseService
 {

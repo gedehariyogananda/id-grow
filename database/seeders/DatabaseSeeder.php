@@ -122,7 +122,7 @@ class DatabaseSeeder extends Seeder
                 'mutation_date' => now()->subDays(10),
                 'type' => 'in',
                 'quantity' => $pl->stock,
-                'note' => 'Initial stock for ProductLocation ID ' . $pl->id,
+                'note' => 'Stock Awal Produk ' . $pl->product->name_product . ' di ' . $pl->location->location_name,
             ]);
         }
 

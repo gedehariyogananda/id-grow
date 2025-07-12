@@ -44,47 +44,39 @@ class UnitController extends Controller
 
     public function store(Request $request)
     {
-        try {
-            $validator = Validator::make($request->all(), [
-                'name' => 'required|string|max:255',
-                'description' => 'nullable|string',
-            ]);
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
 
-            if ($validator->fails()) {
-                throw new ValidationException($validator);
-            }
-
-            $data = $validator->validated();
-
-            $unit = $this->unitService->create($data);
-            return ApiResponseHelper::success($unit, 'Unit created successfully');
-        } catch (\Exception $e) {
-            return ApiResponseHelper::error($e->getMessage(), 500);
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
         }
+
+        $data = $validator->validated();
+
+        $unit = $this->unitService->create($data);
+        return ApiResponseHelper::success($unit, 'Unit created successfully');
     }
 
     public function update(Request $request, $id)
     {
-        try {
-            $validator = Validator::make($request->all(), [
-                'name' => 'sometimes|required|string|max:255',
-                'description' => 'nullable|string',
-            ]);
+        $validator = Validator::make($request->all(), [
+            'name' => 'sometimes|required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
 
-            if ($validator->fails()) {
-                throw new ValidationException($validator);
-            }
-
-            $data = $validator->validated();
-
-            $unit = $this->unitService->update($id, $data);
-            if (!$unit) {
-                return ApiResponseHelper::error('Unit not found', 404);
-            }
-            return ApiResponseHelper::success($unit, 'Unit updated successfully');
-        } catch (\Exception $e) {
-            return ApiResponseHelper::error($e->getMessage(), 500);
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
         }
+
+        $data = $validator->validated();
+
+        $unit = $this->unitService->update($id, $data);
+        if (!$unit) {
+            return ApiResponseHelper::error('Unit not found', 404);
+        }
+        return ApiResponseHelper::success($unit, 'Unit updated successfully');
     }
 
     public function destroy($id)

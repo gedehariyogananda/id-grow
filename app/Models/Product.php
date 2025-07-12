@@ -33,6 +33,7 @@ class Product extends Model
         'name_product',
         'category_id',
         'unit_id',
+        'embed'
     ];
 
     public function scopeOptions($query, $options = [])
@@ -80,6 +81,25 @@ class Product extends Model
             $query->where('unit_id', $options['unit_id']);
         }
 
+        if (isset($options['embed'])) {
+            if ($options['embed'] === 'mutations') {
+                $query->with([
+                    'unit:id,name',
+                    'category:id,name',
+                    'productLocations' => function ($q) {
+                        $q->select(['id', 'product_id', 'location_id', 'stock']);
+                    },
+                    'productLocations.location' => function ($q) {
+                        $q->select(['id', 'location_code', 'location_name']);
+                    },
+                    'productLocations.mutations' => function ($q) {
+                        $q->select(['id', 'product_location_id', 'mutation_code', 'mutation_date', 'type', 'quantity', 'note'])
+                            ->orderBy('mutation_date', 'desc');
+                    },
+                ]);
+            }
+        }
+
         return $query;
     }
 
@@ -93,12 +113,26 @@ class Product extends Model
         return $this->belongsTo(Unit::class);
     }
 
+    public function productLocations()
+    {
+        return $this->hasMany(ProductLocation::class);
+    }
+
     public function scopeWithAllRelations($query)
     {
-        return $query->with(['category' => function ($query) {
-            $query->select(['id', 'name']);
-        }, 'unit' => function ($query) {
-            $query->select(['id', 'name']);
-        }]);
+        return $query->with([
+            'unit:id,name',
+            'category:id,name',
+            'productLocations' => function ($q) {
+                $q->select(['id', 'product_id', 'location_id', 'stock']);
+            },
+            'productLocations.location' => function ($q) {
+                $q->select(['id', 'location_code', 'location_name']);
+            },
+            'productLocations.mutations' => function ($q) {
+                $q->select(['id', 'product_location_id', 'mutation_code', 'mutation_date', 'type', 'quantity', 'note'])
+                    ->orderBy('mutation_date', 'desc');
+            },
+        ]);
     }
 }

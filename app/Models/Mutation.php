@@ -42,6 +42,7 @@ class Mutation extends Model
         'type',
         'quantity',
         'note',
+        'embed'
     ];
 
     public function scopeOptions($query, $options = [])
@@ -99,6 +100,12 @@ class Mutation extends Model
 
         if (isset($options['note'])) {
             $query->where('note', $options['note']);
+        }
+
+        if (isset($options['embed'])) {
+            if ($options['embed'] === 'productLocation') {
+                $query->with('productLocation:id,product_id,location_id,stock', 'user:id,name,email');
+            }
         }
 
         return $query;

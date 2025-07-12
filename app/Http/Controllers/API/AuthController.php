@@ -57,4 +57,16 @@ class AuthController extends Controller
 
         return ApiResponseHelper::success($result, 'Token refreshed successfully');
     }
+
+    public function logout(Request $request)
+    {
+        try {
+            $user = $request->user();
+            $user->currentAccessToken()->delete();
+
+            return ApiResponseHelper::success(null, 'Logout successful');
+        } catch (\Exception $e) {
+            return ApiResponseHelper::error($e->getMessage(), 500);
+        }
+    }
 }
