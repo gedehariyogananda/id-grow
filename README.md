@@ -16,6 +16,11 @@ A modern, scalable backend system built with **Laravel 11** using a clean archit
 
 ---
 
+## Resources
+
+- Postman Documentation: [https://documenter.getpostman.com/view/41973164/2sB34fngTH](https://documenter.getpostman.com/view/41973164/2sB34fngTH)  
+- API Deployment URL: [https://api-grow-case.amy-dev.my.id/api/users](https://api-grow-case.amy-dev.my.id/api/users)
+
 ## How to Run Locally
 
 ```bash
@@ -42,8 +47,6 @@ php artisan serve
 All modules implement complete **Create**, **Read**, **Update**, and **Delete** functionality in every folder postman.
 
 ![CRUD](https://github.com/user-attachments/assets/45a89372-d107-4b5e-a239-46a92a546f5c)
-
-📎 Postman Collection: [View Full API Docs](https://documenter.getpostman.com/view/41973164/2sB34fngTH)
 
 ---
 
@@ -135,8 +138,5 @@ Displays product mutation based on each **product location**.
 
 ---
 
-## 📄 Additional Resources
-
-- Postman Documentation: [https://documenter.getpostman.com/view/41973164/2sB34fngTH](https://documenter.getpostman.com/view/41973164/2sB34fngTH)  
-- API Deployment URL: [https://api-grow-case.amy-dev.my.id/api/users](https://api-grow-case.amy-dev.my.id/api/users)
+Thankfull
 
