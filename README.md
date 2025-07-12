@@ -4,7 +4,7 @@ A modern, scalable backend system built with **Laravel 11** using a clean archit
 
 ---
 
-## Project Spec
+## Project Specifications
 
 ### Tech Stack
 
