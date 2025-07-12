@@ -24,7 +24,7 @@ A modern, scalable backend system built with **Laravel 11** using a clean archit
 ## How to Run Locally
 
 ```bash
-git clone https://github.com/your-username/id-grow.git
+git clone https://github.com/gedehariyogananda/id-grow.git
 cd id-grow
 
 composer install
