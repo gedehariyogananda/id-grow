@@ -1,66 +1,142 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# ID-GROW Backend Repository
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A modern, scalable backend system built with **Laravel 11** using a clean architecture approach with **Repository-Service Pattern**, JWT-based authentication (with **refresh tokens**), standardized API all handler exceptios and successfully response.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Project Spec
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Tech Stack
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Framework**: Laravel 11
+- **Architecture**: Repository-Service Pattern
+- **Authentication**: Access & Refresh Token
+- **API Standardization**: Uniform success/error responses
+- **Deployment**: Docker with Nginx for webserver & Traefik for api gateway
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## How to Run Locally
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+```bash
+git clone https://github.com/your-username/id-grow.git
+cd id-grow
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+composer install
 
-## Laravel Sponsors
+cp .env.example .env
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+php artisan key:generate
 
-### Premium Partners
+php artisan migrate
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+php artisan migrate:fresh --seed
 
-## Contributing
+php artisan serve
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Overview Core Tasks
 
-## Code of Conduct
+### 1. CRUD All Modules
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+All modules implement complete **Create**, **Read**, **Update**, and **Delete** functionality in every folder postman.
 
-## Security Vulnerabilities
+![CRUD](https://github.com/user-attachments/assets/45a89372-d107-4b5e-a239-46a92a546f5c)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+📎 Postman Collection: [View Full API Docs](https://documenter.getpostman.com/view/41973164/2sB34fngTH)
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 2. User Mutation History
+
+#### Get All Users with Mutations
+
+- `GET /users?embed=mutations`
+
+![User List](https://github.com/user-attachments/assets/d277533b-3878-413b-bd6e-3bcd4ddd7da9)
+
+🔗 [Postman Docs](https://documenter.getpostman.com/view/41973164/2sB34fngTH#13e36867-bf09-4e74-881d-080b1fdb54c5)
+
+#### Get User Detail with Mutations
+
+- `GET /users/:id`
+
+![User Detail](https://github.com/user-attachments/assets/d8806e34-c4db-494a-ae7e-49a305c179dd)
+
+🔗 [Postman Docs](https://documenter.getpostman.com/view/41973164/2sB34fngTH#07afd5c0-46d8-4e29-b105-b224170a68d6)
+
+---
+
+### 3. Product Mutation History
+
+Displays product mutation based on each **product location**.
+
+![Product Location](https://github.com/user-attachments/assets/4382a839-85d9-44cb-9560-cb36fadeb37c)
+
+#### Get All Products with Mutations
+
+- `GET /products?embed=mutations`
+
+![Product List](https://github.com/user-attachments/assets/837d2171-bf02-48cc-9aa4-271cb5315a31)
+
+🔗 [Postman Docs](https://documenter.getpostman.com/view/41973164/2sB34fngTH#61ee6f9f-f83b-4eaa-824e-8560d4ef5758)
+
+#### Get Product Detail with Mutations
+
+- `GET /products/:id?embed=mutations`
+
+![Product Detail](https://github.com/user-attachments/assets/15afeac8-bf1b-41c6-85b8-97fe1610bd64)
+
+🔗 [Postman Docs](https://documenter.getpostman.com/view/41973164/2sB34fngTH#2fed624f-a243-48ff-9e2d-f967f52b24bb)
+
+---
+
+### 4. Stock Mutation Module
+
+> This module manages **stock in/out mutations** via a pivot table (`product_location`). It ensures accurate stock adjustment and rollback logic when mutation types or quantities are updated or deleted.
+
+![Mutation Logic](https://github.com/user-attachments/assets/e8b53b5c-e261-410f-ad80-ec5a114e3d65)
+
+#### Create Mutation
+
+- `POST /mutations`
+- Generates a unique mutation code.
+- Validates if stock is sufficient for `out` type.
+- Increases or decreases stock accordingly.
+
+![Add Mutation](https://github.com/user-attachments/assets/3fe32a59-7c99-4021-97f1-61eef24616b8)
+
+🔗 [Postman Docs](https://documenter.getpostman.com/view/41973164/2sB34fngTH#b0be368b-83bc-40c3-8931-f940daf6e771)
+
+---
+
+#### Update Mutation
+
+- `PUT /mutations/:id`
+- Reverts old mutation's stock effect first.
+- Validates and applies new mutation data.
+- Prevents update if resulting stock would be invalid.
+
+![Update Mutation](https://github.com/user-attachments/assets/82d200e0-bff1-42b0-ba31-5856175bd823)
+
+🔗 [Postman Docs](https://documenter.getpostman.com/view/41973164/2sB34fngTH#dca431fc-6a81-463c-bba6-910dc2514f03)
+
+---
+
+#### Delete Mutation
+
+- `DELETE /mutations/:id`
+- Reverses the mutation effect on stock before deletion.
+- Safely removes the mutation record.
+
+![Delete Mutation](https://github.com/user-attachments/assets/a25e029f-04eb-4c14-8488-c5046ba4af5e)
+
+🔗 [Postman Docs](https://documenter.getpostman.com/view/41973164/2sB34fngTH#b4f69165-5926-403b-9679-d7efcc8f7faa)
+
+---
+
+## 📄 Additional Resources
+
+- Postman Documentation: [https://documenter.getpostman.com/view/41973164/2sB34fngTH](https://documenter.getpostman.com/view/41973164/2sB34fngTH)  
+- API Deployment URL: [https://api-grow-case.amy-dev.my.id/api/users](https://api-grow-case.amy-dev.my.id/api/users)
+
